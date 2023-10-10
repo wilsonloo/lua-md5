@@ -5,7 +5,7 @@ LUA_VERSION =   5.3
 # details.
 
 ## Linux/BSD
-PREFIX ?=          ../skynet/3rd/lua
+PREFIX ?=          C:\\Users\\wilson\\buildstation\\lua-5.3.5_Win64_dllw6_lib\\include\\
 LDFLAGS +=         -shared
 
 ## OSX (Macports)
@@ -13,23 +13,31 @@ LDFLAGS +=         -shared
 #LDFLAGS +=         -bundle -undefined dynamic_lookup
 
 LUA_INCLUDE_DIR ?= $(PREFIX)/
-LUA_LIB_DIR ?=     ../skynet/luaclib/
+LUA_LIB_DIR ?=     C:\\Users\\wilson\\buildstation\\lua-5.3.5_Win64_dllw6_lib\\
 
 # Some versions of Solaris are missing isinf(). Add -DMISSING_ISINF to
 # CFLAGS to work around this bug.
 
+CC = gcc
 #CFLAGS ?=          -g -Wall -pedantic -fno-inline
 CFLAGS ?=          -g -O3 -Wall -pedantic
-override CFLAGS += -fpic -I$(LUA_INCLUDE_DIR) -DVERSION=\"$(MD5_VERSION)\"
+override CFLAGS += -I$(LUA_INCLUDE_DIR) -DVERSION=\"$(MD5_VERSION)\" -D_PLATFORM_WIN_
+override LDFLAGS += -L$(LUA_LIB_DIR)
 
 INSTALL ?= install
 
 .PHONY: all clean install package
 
-all: md5.so
+all: md5.dll
 
-md5.so: lua-md5.o ngx_md5.o
-	$(CC) $(LDFLAGS) -o $@ $^
+md5.dll: lua-md5.o ngx_md5.o
+	$(CC) $(LDFLAGS) -o $@ $^ -llua53
+
+lua-md5.o: lua-md5.c
+	$(CC) $(CFLAGS) -c $^
+
+ngx_md5.o: ngx_md5.c
+	$(CC) $(CFLAGS) -c $^
 
 clean:
 	rm -f *.o *.so

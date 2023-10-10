@@ -31,6 +31,11 @@
 
 #define ngx_memzero(buf, n)          (void) memset(buf, 0, n)
 
+#if _PLATFORM_WIN_
+    #define u_char unsigned char
+    #define u_int unsigned int
+#endif
+
 typedef struct {
     uint64_t  bytes;
     uint32_t  a, b, c, d;
