@@ -5,7 +5,7 @@ LUA_VERSION =   5.3
 # details.
 
 ## Linux/BSD
-PREFIX ?=          ../skynet/3rd/lua
+PREFIX ?=          /home/wilson/buildstation/lua-5.3.6_Linux54_64_lib/include/
 LDFLAGS +=         -shared
 
 ## OSX (Macports)
